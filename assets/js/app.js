@@ -11,7 +11,13 @@
 //
 // If you no longer want to use a dependency, remember
 // to also remove its path from "config.paths.watched".
-import "phoenix_html"
+import "phoenix_html";
+import tasktracker_init from "./tasktracker.jsx";
+import store from "./store";
+
+$(function() {
+  tasktracker_init(store);
+});
 
 // Import local files
 //
