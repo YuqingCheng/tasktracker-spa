@@ -12,10 +12,33 @@ class TaskFormComponent extends React.Component {
     super(props);
     this.state = {
       redirect: false,
-      intact: true,
     };
     this.update = this.update.bind(this);
     this.submit_form = this.submit_form.bind(this);
+  }
+
+  componentWillMount() {
+      let task = {
+        title: '',
+        description: '',
+        user_name: '',
+        time: '',
+      }
+
+      if(this.props.match.params.task_id) {
+        const task_id = this.props.match.params.task_id;
+        task = this.props.tasks[task_id];
+        const user_name = task.user_id ? this.props.users[task.user_id].name : '';
+        if(task.user_id) {
+          delete task.user_id;
+        } 
+        task = Object.assign({}, task, {user_name: user_name});
+      }
+      
+      this.props.dispatch({
+        type: 'UPDATE_TASK_FORM',
+        data: task,
+      });
   }
 
   update(ev) {
@@ -45,23 +68,6 @@ class TaskFormComponent extends React.Component {
   render() {
     if(this.state.redirect) {
       return (<Redirect to={'/'} />);
-    }
-    if(this.props.match.params.task_id && this.state.intact) {
-      const task_id = this.props.match.params.task_id;
-      var task = this.props.tasks[task_id];
-      const user_name = task.user_id ? this.props.users[task.user_id].name : '';
-      if(task.user_id) {
-        delete task.user_id;
-      }
-      
-      task = Object.assign({}, task, {user_name: user_name});
-      this.props.dispatch({
-        type: 'UPDATE_TASK_FORM',
-        data: task,
-      });
-      this.setState({
-        intact: false,
-      });
     }
 
     return (
