@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink, Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router';
 import { Form, FormGroup, NavItem, Input, Button, Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle } from 'reactstrap';
 import { connect } from 'react-redux';
 import { CookiesProvider } from 'react-cookie';
@@ -34,7 +35,7 @@ class TaskListComponent extends React.Component {
     const tasks = [];
     for(var key in this.props.tasks) {
       if(this.props.tasks.hasOwnProperty(key)) {
-        tasks.push(<Task id={this.props.tasks[key].id} parent={this.state}/>);
+        tasks.push(<Task key={this.props.tasks[key].id} id={this.props.tasks[key].id} parent={this}/>);
       }
     }
 
@@ -51,8 +52,8 @@ class TaskListComponent extends React.Component {
   }
 }
 
-const TaskList = connect(state => ({ 
+const TaskList = withRouter(connect(state => ({ 
   tasks: state.tasks,
-}))(TaskListComponent);
+}))(TaskListComponent));
 
 export default TaskList;

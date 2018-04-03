@@ -6,7 +6,7 @@ import { CookiesProvider } from 'react-cookie';
 import api from '../api';
 import Login from './login.jsx';
 
-class Task extends React.Component {
+class TaskComponent extends React.Component {
   constructor(props) {
     super(props);
 
@@ -17,8 +17,8 @@ class Task extends React.Component {
       id: id,
       title: task.title,
       description: task.description,
-      time: task.time,
-      user_name: this.props.users[task.user_id].name,
+      time: task.time ? task.time : 'N/A',
+      user_name: task.user_id ? this.props.users[task.user_id].name : 'unassigned',
     }
     this.editTask = this.editTask.bind(this);
   }
@@ -32,8 +32,8 @@ class Task extends React.Component {
         id: id,
         title: task.title,
         description: task.description,
-        time: task.time,
-        user_name: this.props.users[task.user_id].name,
+        time: task.time ? task.time : 'N/A',
+        user_name: task.user_id ? this.props.users[task.user_id].name : 'unassigned',
       });
     }
   }
@@ -49,9 +49,10 @@ class Task extends React.Component {
       <Card>
         <CardBody>
           <CardTitle>{this.state.title}</CardTitle>
-          <CardSubtitle>assigned to: {this.state.user_name} for {this.state.time} minutes.</CardSubtitle>
+          <CardText>Assign Status: {this.state.user_name}</CardText> 
+          <CardText>Working Time: {this.state.time}</CardText>
           <CardText>
-            Description: {this.state.description}
+              Description: {this.state.description}
           </CardText>
           <Button onClick={this.editTask}>Edit</Button>
         </CardBody>
@@ -60,4 +61,9 @@ class Task extends React.Component {
   }
 }
 
-export default connect((state) => ({ tasks: state.tasks, users: state.users }))((props) => (<Task />));
+const Task = connect((state) => ({ 
+  tasks: state.tasks, 
+  users: state.users, 
+}))(TaskComponent);
+
+export default Task;

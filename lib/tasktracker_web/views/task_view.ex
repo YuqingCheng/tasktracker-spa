@@ -3,7 +3,10 @@ defmodule TasktrackerWeb.TaskView do
   alias TasktrackerWeb.TaskView
 
   def render("index.json", %{tasks: tasks}) do
-    %{data: render_many(tasks, TaskView, "task.json")}
+    data = Enum.reduce(tasks, %{}, fn(task, obj) -> 
+      Map.put(obj, task.id, render("task.json", %{task: task}))
+    end)
+    %{data: data}
   end
 
   def render("show.json", %{task: task}) do
@@ -13,6 +16,9 @@ defmodule TasktrackerWeb.TaskView do
   def render("task.json", %{task: task}) do
     %{id: task.id,
       title: task.title,
-      description: task.description}
+      description: task.description,
+      time: task.time,
+      user_id: task.user_id
+    }
   end
 end

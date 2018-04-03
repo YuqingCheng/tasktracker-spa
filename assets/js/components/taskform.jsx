@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink, Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router';
 import { Form, FormGroup, NavItem, Input, Button, Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle } from 'reactstrap';
 import { connect } from 'react-redux';
 import { CookiesProvider } from 'react-cookie';
@@ -11,6 +12,7 @@ class TaskFormComponent extends React.Component {
     super(props);
     this.state = {
       redirect: false,
+      intact: true,
     };
     this.update = this.update.bind(this);
     this.submit_form = this.submit_form.bind(this);
@@ -44,16 +46,21 @@ class TaskFormComponent extends React.Component {
     if(this.state.redirect) {
       return (<Redirect to={'/'} />);
     }
-    if(this.props.match) {
+    if(this.props.match.params.task_id && this.state.intact) {
       const task_id = this.props.match.params.task_id;
-      task = this.props.tasks[task_id];
-      user_name = this.props.users[task.user_id].name;
-      delete task[user_id];
-      delete task[id];
-      task.user_name = user_name;
+      var task = this.props.tasks[task_id];
+      const user_name = task.user_id ? this.props.users[task.user_id].name : '';
+      if(task.user_id) {
+        delete task.user_id;
+      }
+      
+      task = Object.assign({}, task, {user_name: user_name});
       this.props.dispatch({
         type: 'UPDATE_TASK_FORM',
         data: task,
+      });
+      this.setState({
+        intact: false,
       });
     }
 
@@ -85,10 +92,10 @@ class TaskFormComponent extends React.Component {
   }
 }
 
-const TaskForm = connect((state) => ({ 
+const TaskForm = withRouter(connect((state) => ({ 
   tasks: state.tasks, 
   users: state.users, 
   task_form: state.task_form 
-}))(TaskFormComponent);
+}))(TaskFormComponent));
 
 export default TaskForm;
