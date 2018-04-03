@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider, connect } from 'react-redux';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import { CookiesProvider, withCookies, Cookies } from 'react-cookie';
+import TaskList from './components/tasklist.jsx';
+import TaskForm from './components/taskform.jsx';
 
 import Nav from './components/nav.jsx';
 
@@ -29,14 +31,14 @@ class Tasktracker extends React.Component {
 
   render() {
     return (
-      <Router>
+      <Router path="/">
         <div>
           <Nav />
-          <Route path="/" exact={true} render={() => {
-            return (<div>
-                      <p>TODO</p>
-                    </div>);
-          }} />
+          <Switch>
+          <Route path="/taskform" render={() => (<TaskForm/>)} />
+            <Route path="/taskform/:task_id" render={() => (<TaskForm/>)} />
+            <Route path="/" render={() => (<TaskList/>)} />
+          </Switch>
         </div>
       </Router>
     );

@@ -37,9 +37,9 @@ class LoginBox extends React.Component {
   }
 
   update(ev) {
-    let tgt = $(ev.target);
+    let target = $(ev.target);
     let data = {};
-    data[tgt.attr('name')] = tgt.val();
+    data[target.attr('name')] = target.val();
     this.props.dispatch({
       type: 'UPDATE_LOGIN_FORM',
       data: data,

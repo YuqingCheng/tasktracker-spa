@@ -14,8 +14,11 @@
 import "phoenix_html";
 import tasktracker_init from "./tasktracker.jsx";
 import store from "./store";
+import api from "./api";
 
 $(function() {
+  api.request_users();
+  api.request_tasks();
   tasktracker_init(store);
 });
 

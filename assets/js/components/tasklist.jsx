@@ -1,0 +1,58 @@
+import React from 'react';
+import { NavLink, Redirect } from 'react-router-dom';
+import { Form, FormGroup, NavItem, Input, Button, Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle } from 'reactstrap';
+import { connect } from 'react-redux';
+import { CookiesProvider } from 'react-cookie';
+import api from '../api';
+import Login from './login.jsx';
+import Task from './task';
+
+class TaskListComponent extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      task_form: null,
+    };
+    this.addTask = this.addTask.bind(this);
+  }
+
+  addTask(ev) {
+    this.setState({task_form: -1});
+  }
+
+  render() {
+
+    if(this.state.task_form) {
+      if(this.state.task_form < 0) {
+        return (<Redirect to={'/taskform'} />);
+      } else {
+        return (<Redirect to={'/taskform/'+this.state.task_form} />);
+      }    
+    }
+
+    const tasks = [];
+    for(var key in this.props.tasks) {
+      if(this.props.tasks.hasOwnProperty(key)) {
+        tasks.push(<Task id={this.props.tasks[key].id} parent={this.state}/>);
+      }
+    }
+
+    return (
+      <div>
+        <Button onClick={this.addTask}>Add Task</Button>
+        <div>
+          <ul>
+            {tasks}
+          </ul>
+        </div>
+      </div>
+    );
+  }
+}
+
+const TaskList = connect(state => ({ 
+  tasks: state.tasks,
+}))(TaskListComponent);
+
+export default TaskList;
