@@ -81,6 +81,7 @@ class LoginBox extends React.Component {
               <NavLink
                 className={classnames({ active: this.state.onTab === '1'})}
                 onClick={() => { this.toggle('1');}}
+                style={{color: 'grey'}}
                 
               >Log in</NavLink>
             </NavItem>
@@ -88,6 +89,7 @@ class LoginBox extends React.Component {
               <NavLink
                 className={classnames({ active: this.state.onTab === '2'})}
                 onClick={() => { this.toggle('2');}}
+                style={{color: 'grey'}}
               >Register</NavLink>
             </NavItem>
           </Nav>
