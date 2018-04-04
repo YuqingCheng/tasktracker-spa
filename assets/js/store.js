@@ -17,8 +17,14 @@ function tasks(state = {}, action) {
     case 'UPDATE_TASK':
       return Object.assign({}, state, action.data);
     case 'DELETE_TASK':
-      delete state[action.data.id]
-      return state;
+      let next_state = {};
+      for(var key in state) {
+        if(key != action.data) {
+          next_state[key] = state[key];
+        }
+      }
+      
+      return next_state;
     default:
       return state;
   }  
@@ -40,8 +46,8 @@ function users(state = {}, action) {
 let empty_form = {
   title: "",
   description: "",
-  time: null,
-  user_id: null,
+  time: 0,
+  user_id: 0,
 };
 
 function task_form(state = empty_form, action) {
@@ -57,6 +63,8 @@ function login(state = {name: '', pass: ''}, action) {
   switch (action.type) {
     case 'UPDATE_LOGIN_FORM':
       return Object.assign({}, state, action.data);
+    case 'RESET_LOGIN_FORM':
+      return {name: '', pass: ''};
     default: 
       return state;
   }

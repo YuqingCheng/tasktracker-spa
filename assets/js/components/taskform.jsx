@@ -49,18 +49,23 @@ class TaskFormComponent extends React.Component {
   }
 
   submit_form(ev) {
-    let data = this.props.task_form;
+    let task_params = this.props.task_form;
 
-    data = Object.assign({}, data, {
-      user_id: parseInt(data.user_id),
-      time: parseInt(data.time),
+    task_params = Object.assign({}, task_params, {
+      user_id: parseInt(task_params.user_id),
+      time: parseInt(task_params.time),
     });
 
-    if(data.user_id == 0) {
-      data = Object.assign({}, data, {
+    if(task_params.user_id == 0) {
+      task_params = Object.assign({}, task_params, {
         user_id: null,
       });
     }
+
+    const data = {
+      task_params: task_params,
+      token: this.props.token,
+    };
 
     if(this.props.match.params.task_id) {
       // update
@@ -128,6 +133,7 @@ class TaskFormComponent extends React.Component {
 const TaskForm = withRouter(connect((state) => ({ 
   tasks: state.tasks, 
   users: state.users, 
+  token: state.token,
   task_form: state.task_form 
 }))(TaskFormComponent));
 

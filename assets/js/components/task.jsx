@@ -21,6 +21,7 @@ class TaskComponent extends React.Component {
       user_name: task.user_id ? this.props.users[task.user_id].name : 'unassigned',
     }
     this.editTask = this.editTask.bind(this);
+    this.delete = this.delete.bind(this);
   }
 
   componentWillMount(){
@@ -42,6 +43,12 @@ class TaskComponent extends React.Component {
     });
   }
 
+  delete(ev) {
+    this.props.onDelete(this.props.id);
+  }
+
+
+
   render() {
     return (
       <Card>
@@ -53,6 +60,7 @@ class TaskComponent extends React.Component {
               Description: {this.state.description}
           </CardText>
           <Button onClick={this.editTask}>Edit</Button>
+          <Button onClick={this.delete}>Complete</Button>
         </CardBody>
       </Card>
     );

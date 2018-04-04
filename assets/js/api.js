@@ -34,7 +34,7 @@ class Api {
       method: "post",
       dataType: "json",
       contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify({ token: data.token, task: data }),
+      data: JSON.stringify({ token: data.token, task: data.task_params }),
       success: (resp) => {
         store.dispatch({
           type: 'ADD_TASK',
@@ -42,6 +42,9 @@ class Api {
         });
         $(callback);
       },
+      error: (xhr) => {
+        alert('please login first');
+      }
     });
       
   }
@@ -51,7 +54,7 @@ class Api {
       method: "put",
       dataType: "json",
       contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify({ token: data.token, task: data, id: id }),
+      data: JSON.stringify({ task: data.task_params, id: id, token: data.token }),
       success: (resp) => {
         store.dispatch({
           type: 'UPDATE_TASK',
@@ -59,6 +62,28 @@ class Api {
         });
         $(callback);
       },
+      error: (xhr) => {
+        alert('please login first');
+      }
+    }); 
+  }
+
+  delete_task(id, token) {
+    $.ajax("/api/v1/tasks/"+id, {
+      method: "delete",
+      dataType: "json",
+      contentType: "application/json; charset=UTF-8",
+      data: JSON.stringify({ token: token, id: id }),
+      success: (resp) => {
+        store.dispatch({
+          type: 'DELETE_TASK',
+          data: id,
+        });
+        //$(callback);
+      },
+      error: (xhr) => {
+        alert('please login first');
+      }
     }); 
   }
 
@@ -73,7 +98,32 @@ class Api {
           type: 'SET_TOKEN',
           token: resp,
         });
+        store.dispatch({
+          type: 'RESET_LOGIN_FORM',
+        });
       },
+      error: (xhr) => {
+        alert('please check the username or password');
+      }
+    });
+  }
+
+  register(data) {  
+    $.ajax("/api/v1/users", {
+      method: "post",
+      dataType: "json",
+      contentType: "application/json; charset=UTF-8",
+      data: JSON.stringify(data),
+      success: (resp) => {
+        store.dispatch({
+          type: 'SET_TOKEN',
+          token: resp,
+        });
+        this.request_users();
+      },
+      error: (xhr) => {
+        alert('user might have existed!');
+      }
     });
   }
 

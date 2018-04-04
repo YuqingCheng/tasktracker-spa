@@ -9,6 +9,13 @@ defmodule TasktrackerWeb.UserView do
     %{data: data}
   end
 
+  def render("token.json", %{user: user, token: token}) do
+    %{
+      user_id: user.id,
+      token: token,
+    }
+  end
+
   def render("show.json", %{user: user}) do
     %{data: render_one(user, UserView, "user.json")}
   end

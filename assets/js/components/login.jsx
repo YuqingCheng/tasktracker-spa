@@ -15,6 +15,7 @@ class LoginBox extends React.Component {
     this.create_token = this.create_token.bind(this);
     this.delete_token = this.delete_token.bind(this);
     this.toggle = this.toggle.bind(this);
+    this.register = this.register.bind(this);
   }
 
   toggle(tab) {
@@ -53,6 +54,10 @@ class LoginBox extends React.Component {
     console.log(this.props.login);
   }
 
+  register(ev) {
+    api.register(this.props.login);
+  }
+
   delete_token(ev) {
     this.props.dispatch({
       type: "DELETE_TOKEN",
@@ -61,9 +66,10 @@ class LoginBox extends React.Component {
 
   render() {
     if(this.props.token) {
+      let user = this.props.users[this.props.token.user_id];
       return (
         <div className="navbar-text">
-          User id = { this.props.token.user_id }, 
+          Hello, {user ? user.name : 'visitor'}
           <Button onClick={this.delete_token}>Log Out</Button>
         </div>
       );
@@ -111,7 +117,7 @@ class LoginBox extends React.Component {
                     <Input type="password" name="pass" placeholder="password"
                           value={this.props.login.pass} onChange={this.update} />
                   </FormGroup>
-                  <Button onClick={this.create_token}>Register</Button>
+                  <Button onClick={this.register}>Register</Button>
                 </Form>
               </div>
             </TabPane>
@@ -125,6 +131,7 @@ class LoginBox extends React.Component {
 const Login =  connect(state => ({
   token: state.token,
   login: state.login,
+  users: state.users,
 }))(withCookies(LoginBox));
 
 export default Login;

@@ -14,7 +14,7 @@ defmodule Tasktracker.Users.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:name, :password])
-    |> validate_required([:name])
+    |> cast(attrs, [:name, :password_hash])
+    |> validate_required([:name, :password_hash])
   end
 end

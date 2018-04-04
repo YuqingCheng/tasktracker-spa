@@ -55,9 +55,15 @@ defmodule Tasktracker.Users do
 
   """
   def create_user(attrs \\ %{}) do
-    %User{}
-    |> User.changeset(attrs)
-    |> Repo.insert()
+    name = attrs.name
+    user = Repo.one(from u in User, where: u.name == ^name)
+    if user do
+      {:error, nil}
+    else
+      %User{}
+        |> User.changeset(attrs)
+        |> Repo.insert()
+    end 
   end
 
   @doc """
