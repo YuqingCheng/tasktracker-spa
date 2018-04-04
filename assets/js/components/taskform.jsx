@@ -15,24 +15,20 @@ class TaskFormComponent extends React.Component {
     };
     this.update = this.update.bind(this);
     this.submit_form = this.submit_form.bind(this);
+    this.submit_callback = this.submit_callback.bind(this);
   }
 
   componentWillMount() {
       let task = {
         title: '',
         description: '',
-        user_name: '',
-        time: '',
+        user_id: 0,
+        time: 0,
       }
 
-      if(this.props.match.params.task_id) {
+      if(this.props.match.params.task_id && this.props.match.params.task_id !== '') {
         const task_id = this.props.match.params.task_id;
         task = this.props.tasks[task_id];
-        const user_name = task.user_id ? this.props.users[task.user_id].name : '';
-        if(task.user_id) {
-          delete task.user_id;
-        } 
-        task = Object.assign({}, task, {user_name: user_name});
       }
       
       this.props.dispatch({
@@ -43,6 +39,7 @@ class TaskFormComponent extends React.Component {
 
   update(ev) {
     let target = $(ev.target);
+    console.log(target);
     let data = {};
     data[target.attr('name')] = target.val();
     this.props.dispatch({
@@ -52,14 +49,31 @@ class TaskFormComponent extends React.Component {
   }
 
   submit_form(ev) {
-    if(this.props.match) {
-      // update
-      api.update_task(this.props.match.params.task_id, this.props.task_form);
-    } else {
-      // create
-      api.create_task(this.props.task_form);
+    let data = this.props.task_form;
+
+    data = Object.assign({}, data, {
+      user_id: parseInt(data.user_id),
+      time: parseInt(data.time),
+    });
+
+    if(data.user_id == 0) {
+      data = Object.assign({}, data, {
+        user_id: null,
+      });
     }
 
+    if(this.props.match.params.task_id) {
+      // update
+      const task_id = parseInt(this.props.match.params.task_id);
+      api.update_task(task_id, data, this.submit_callback);
+    } else {
+      // create
+      api.create_task(data, this.submit_callback);
+    }
+
+  }
+
+  submit_callback() {
     this.setState({
       redirect: true,
     });
@@ -70,28 +84,41 @@ class TaskFormComponent extends React.Component {
       return (<Redirect to={'/'} />);
     }
 
+    let users = [];
+
+    users.push(<option key={0} value={0}>unassigned</option>);
+
+    for(var key in this.props.users) {
+      if(this.props.users.hasOwnProperty(key)) {
+        var user = this.props.users[key];
+        users.push(
+          <option key={user.id} value={parseInt(user.id)}>{user.name}</option>
+        );
+      }
+    }
+
     return (
       <Card>
         <CardBody>
-            <Form inline>
               <FormGroup>
                 <Input type="text" name="title" placeholder="title"
                       value={this.props.task_form.title} onChange={this.update} />
               </FormGroup>
               <FormGroup>
-                <Input type="text" name="description" placeholder="description"
+                <Input type="textarea" name="description" placeholder="description"
                       value={this.props.task_form.description} onChange={this.update} />
               </FormGroup>
               <FormGroup>
-                <Input type="selection" name="time" placeholder="0"
-                      value={this.props.task_form.time} onChange={this.update} />
+                <Input type="select" name="user_id"
+                      value={this.props.task_form.user_id} onChange={this.update}>
+                      {users}
+                </Input>
               </FormGroup>
               <FormGroup>
-                <Input type="text" name="user_name" placeholder="user's name"
-                      value={this.props.task_form.user_name} onChange={this.update} />
+                <Input type="number" name="time" step={15}
+                      value={this.props.task_form.time} onChange={this.update}/>
               </FormGroup>
               <Button onClick={this.submit_form}>Submit</Button>
-            </Form>
         </CardBody>
       </Card>
     );

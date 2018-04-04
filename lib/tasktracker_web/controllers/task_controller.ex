@@ -21,11 +21,13 @@ defmodule TasktrackerWeb.TaskController do
   end
 
   def show(conn, %{"id" => id}) do
+    {id, _} = Integer.parse id
     task = Tasks.get_task!(id)
     render(conn, "show.json", task: task)
   end
 
   def update(conn, %{"id" => id, "task" => task_params}) do
+    {id, _} = Integer.parse(id)
     task = Tasks.get_task!(id)
 
     with {:ok, %Task{} = task} <- Tasks.update_task(task, task_params) do

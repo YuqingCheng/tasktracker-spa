@@ -23,19 +23,17 @@ class TaskComponent extends React.Component {
     this.editTask = this.editTask.bind(this);
   }
 
-  componentDidUpdate(prevProps){
-    if(prevProps.id !== this.props.id) {
-      const id = this.props.id;
-      const task = this.props.tasks[id];
+  componentWillMount(){
+    const id = this.props.id;
+    const task = this.props.tasks[id];
 
-      this.setState({
-        id: id,
-        title: task.title,
-        description: task.description,
-        time: task.time ? task.time : 'N/A',
-        user_name: task.user_id ? this.props.users[task.user_id].name : 'unassigned',
-      });
-    }
+    this.setState({
+      id: id,
+      title: task.title,
+      description: task.description,
+      time: task.time ? task.time : 'N/A',
+      user_name: task.user_id ? this.props.users[task.user_id].name : 'unassigned',
+    });
   }
 
   editTask(ev) {

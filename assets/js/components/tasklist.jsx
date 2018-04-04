@@ -13,6 +13,7 @@ class TaskListComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      tasks: this.props.tasks,
       task_form: null,
     };
     this.addTask = this.addTask.bind(this);

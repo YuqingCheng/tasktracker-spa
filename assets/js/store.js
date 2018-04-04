@@ -13,11 +13,9 @@ function tasks(state = {}, action) {
     case 'TASKS_LIST':
       return Object.assign({}, state, action.data);
     case 'ADD_TASK':
-      state[action.data.id] = action.data;
-      return state;
+      return Object.assign({}, state, action.data);
     case 'UPDATE_TASK':
-      state[action.data.id] = action.data;
-      return state;
+      return Object.assign({}, state, action.data);
     case 'DELETE_TASK':
       delete state[action.data.id]
       return state;
@@ -31,11 +29,9 @@ function users(state = {}, action) {
     case 'USERS_LIST':
       return Object.assign({}, state, action.data);
     case 'ADD_USER':
-      state[action.data.id] = action.data;
-      return state;
+      return Object.assign({}, state, action.data);
     case 'UPDATE_USER':
-      state[action.data.id] = action.data;
-      return state;
+      return Object.assign({}, state, action.data);
     default:
       return state;
   }
@@ -44,8 +40,8 @@ function users(state = {}, action) {
 let empty_form = {
   title: "",
   description: "",
-  time: "",
-  user_name: "",
+  time: null,
+  user_id: null,
 };
 
 function task_form(state = empty_form, action) {
@@ -56,7 +52,6 @@ function task_form(state = empty_form, action) {
       return state;
   }
 }
-
 
 function login(state = {name: '', pass: ''}, action) {
   switch (action.type) {
