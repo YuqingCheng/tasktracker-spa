@@ -69,8 +69,8 @@ class LoginBox extends React.Component {
       let user = this.props.users[this.props.token.user_id];
       return (
         <div className="navbar-text">
-          Hello, {user ? user.name : 'visitor'}
-          <Button onClick={this.delete_token}>Log Out</Button>
+          Hello, {user ? user.name : 'visitor'} 
+          <Button style={{marginLeft:10}} onClick={this.delete_token}>Log Out</Button>
         </div>
       );
     } else {
@@ -81,6 +81,7 @@ class LoginBox extends React.Component {
               <NavLink
                 className={classnames({ active: this.state.onTab === '1'})}
                 onClick={() => { this.toggle('1');}}
+                
               >Log in</NavLink>
             </NavItem>
             <NavItem>

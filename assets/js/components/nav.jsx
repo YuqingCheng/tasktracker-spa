@@ -17,9 +17,6 @@ class NavBar extends React.Component {
           <NavItem>
             <NavLink to="/" exact={true} activeClassName="active" className="nav-link">Tasks</NavLink>
           </NavItem>
-          <NavItem>
-            <NavLink to="/users" href="#" className="nav-link">All Users</NavLink>
-          </NavItem>
         </ul>
         <CookiesProvider>
           <Login />

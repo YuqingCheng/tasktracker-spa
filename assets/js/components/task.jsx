@@ -48,10 +48,9 @@ class TaskComponent extends React.Component {
   }
 
 
-
   render() {
     return (
-      <Card>
+      <Card style={{marginTop:10}}>
         <CardBody>
           <CardTitle>{this.state.title}</CardTitle>
           <CardText>Assign Status: {this.state.user_name}</CardText> 
@@ -60,7 +59,7 @@ class TaskComponent extends React.Component {
               Description: {this.state.description}
           </CardText>
           <Button onClick={this.editTask}>Edit</Button>
-          <Button onClick={this.delete}>Complete</Button>
+          <Button color="danger" style={{marginLeft:5}} onClick={this.delete}>Complete</Button>
         </CardBody>
       </Card>
     );
