@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, Redirect } from 'react-router-dom';
 import { withRouter } from 'react-router';
-import { Form, FormGroup, NavItem, Input, Button, Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle } from 'reactstrap';
+import { Form, FormGroup, NavItem, Label, Input, Button, Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle } from 'reactstrap';
 import { connect } from 'react-redux';
 import { CookiesProvider } from 'react-cookie';
 import api from '../api';
@@ -49,6 +49,10 @@ class TaskFormComponent extends React.Component {
   }
 
   submit_form(ev) {
+    if(this.props.task_form.time < 0 || this.props.task_form.time % 15 != 0) {
+      alert('Time should be a multiple of 15!');
+      return;
+    }
     let task_params = this.props.task_form;
 
     task_params = Object.assign({}, task_params, {
@@ -105,25 +109,29 @@ class TaskFormComponent extends React.Component {
     return (
       <Card>
         <CardBody>
-              <FormGroup>
-                <Input type="text" name="title" placeholder="title"
-                      value={this.props.task_form.title} onChange={this.update} />
-              </FormGroup>
-              <FormGroup>
-                <Input type="textarea" name="description" placeholder="description"
-                      value={this.props.task_form.description} onChange={this.update} />
-              </FormGroup>
-              <FormGroup>
-                <Input type="select" name="user_id"
-                      value={this.props.task_form.user_id} onChange={this.update}>
-                      {users}
-                </Input>
-              </FormGroup>
-              <FormGroup>
-                <Input type="number" name="time" step={15}
-                      value={this.props.task_form.time} onChange={this.update}/>
-              </FormGroup>
-              <Button onClick={this.submit_form}>Submit</Button>
+          <FormGroup>
+            <Label for="title">Title</Label>
+            <Input type="text" name="title" placeholder="title"
+                  value={this.props.task_form.title} onChange={this.update} />
+          </FormGroup>
+          <FormGroup>
+            <Label for="description">Description</Label>
+            <Input type="textarea" name="description" placeholder="description"
+                  value={this.props.task_form.description} onChange={this.update} />
+          </FormGroup>
+          <FormGroup>
+            <Label for="user_id">Assigned to</Label>
+            <Input type="select" name="user_id"
+                  value={this.props.task_form.user_id} onChange={this.update}>
+                  {users}
+            </Input>
+          </FormGroup>
+          <FormGroup>
+            <Label for="time">Time Spent</Label>
+            <Input type="number" name="time" step={15} min={0}
+                  value={this.props.task_form.time} onChange={this.update}/>
+          </FormGroup>
+          <Button onClick={this.submit_form}>Submit</Button>
         </CardBody>
       </Card>
     );

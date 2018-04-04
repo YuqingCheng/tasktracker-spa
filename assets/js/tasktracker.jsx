@@ -20,6 +20,9 @@ export default function tasktracker_init(store) {
   );
 }
 
+// Layout design and some style attributes to Nat's microblog-spa example:
+// https://github.com/NatTuck/microblog-spa
+
 class Tasktracker extends React.Component {
   componentWillMount() {
     let token = this.props.cookies.get('token');

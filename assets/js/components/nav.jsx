@@ -6,6 +6,9 @@ import { CookiesProvider } from 'react-cookie';
 import api from '../api';
 import Login from './login.jsx';
 
+// Layout design and some style attributes to Nat's microblog-spa example:
+// https://github.com/NatTuck/microblog-spa
+
 class NavBar extends React.Component {
   render() {
     return (
